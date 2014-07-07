@@ -55,8 +55,11 @@ __END__
 			%div.jumbotron
 				%h1 14 日間の片想い
 				%a{href:'/letters/write'} ラブレターを書く
+				&nbsp;|&nbsp;
 				%a{href:'/letters'} ラブレターを読む
+				%hr
 				= yield
+				%p{style:'text-align:right;width:100%'} 2014 &copy;「14 日間の片想い」製作委員会
 @@ /
 %ul
 	%li
@@ -66,7 +69,7 @@ __END__
 @@ /letters/write
 %form.form{role:'form',method:'POST',action:'/letters'}
 	%div.form-group
-		%label{for:'body'} 本文
+		%label{for:'body'} 前略
 		%textarea.form-control{name:'body',rows:'3'}
 	%button{type:'submit',class:'btn btn-default'} 書く
 @@ /letters
