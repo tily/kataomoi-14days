@@ -15,7 +15,8 @@ helpers do
 	def queue
 		@queue ||= q3.queues.create('LoveLetter',
 			message_retention_period: 14*24*60*60,
-			visibility_timeout: 1
+			visibility_timeout: 30,
+			delay_seconds: 30
 		)
 	end
 end
@@ -32,7 +33,7 @@ get '/letters' do
 	message = queue.receive_message
 	if message
 		@body = message.body
-		message.delete
+		#message.delete
 	end
 	haml :'/letters'
 end
@@ -65,8 +66,8 @@ __END__
 @@ /
 %ul
 	%li 手紙を書けます
-	%li 手紙を読めます、読んだ手紙は消えます
-	%li 読まれなくても 14 日間たてば手紙は消えます
+	%li 手紙を読めます
+	%li 14 日間たつと手紙は消えます
 @@ /letters/write
 %form.form{role:'form',method:'POST',action:'/letters'}
 	%div.form-group
