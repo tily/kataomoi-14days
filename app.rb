@@ -58,9 +58,9 @@ __END__
 		%div.container
 			%div.jumbotron
 				%h1 14 日間の片想い
-				%a{href:'/letters/write'} ラブレターを書く
+				%a{href:'/letters/write'} 手紙を書く
 				&nbsp;|&nbsp;
-				%a{href:'/letters'} ラブレターを読む
+				%a{href:'/letters'} 手紙を読む
 				&nbsp;|&nbsp;
 				%a{href:'/about'} 使い方
 				%hr
@@ -69,9 +69,9 @@ __END__
 @@ /
 %ul
 	%li
-		%a{href:'/letters/write'} ラブレターを書く
+		%a{href:'/letters/write'} 手紙を書く
 	%li
-		%a{href:'/letters'} ラブレターを読む
+		%a{href:'/letters'} 手紙を読む
 @@ /letters/write
 %form.form{role:'form',method:'POST',action:'/letters'}
 	%div.form-group
@@ -84,6 +84,6 @@ __END__
 	%a{href:'/letters'} 次の手紙へ
 @@ /about
 %ul
-	%li ラブレターを書けます
-	%li ラブレターを読めます、読んだラブレターは消えます
-	%li 読まれなくても 14 日間たてばラブレターは消えます
+	%li 手紙を書けます
+	%li 手紙を読めます、読んだ手紙は消えます
+	%li 読まれなくても 14 日間たてば手紙は消えます
