@@ -58,7 +58,7 @@ __END__
 				&nbsp;|&nbsp;
 				%a{href:'/letters'} 手紙を読む
 				%hr
-				= yield
+				!= yield
 				%p{style:'text-align:right;width:100%'} 2014 &copy;「14 日間の片想い」製作委員会
 @@ /
 %ul
