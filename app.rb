@@ -54,7 +54,7 @@ __END__
 		%div.container
 			%div.jumbotron
 				%h1 14 日間の片想い
-				%a{href:'/about'} トップ
+				%a{href:'/'} トップ
 				&nbsp;|&nbsp;
 				%a{href:'/letters/write'} 手紙を書く
 				&nbsp;|&nbsp;
