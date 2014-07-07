@@ -24,6 +24,10 @@ get '/' do
 	haml :'/'
 end
 
+get '/about' do
+	haml :'/about'
+end
+
 get '/letters/write' do
 	haml :'/letters/write'
 end
@@ -57,6 +61,8 @@ __END__
 				%a{href:'/letters/write'} ラブレターを書く
 				&nbsp;|&nbsp;
 				%a{href:'/letters'} ラブレターを読む
+				&nbsp;|&nbsp;
+				%a{href:'/about'} 使い方
 				%hr
 				= yield
 				%p{style:'text-align:right;width:100%'} 2014 &copy;「14 日間の片想い」製作委員会
@@ -76,3 +82,8 @@ __END__
 %div
 	%pre= @body || '(手紙は届いていません)'
 	%a{href:'/letters'} 次の手紙へ
+@@ /about
+%ul
+	%li ラブレターを書けます
+	%li ラブレターを読めます、読んだラブレターは消えます
+	%li 読まれなくても 14 日間たてばラブレターは消えます
