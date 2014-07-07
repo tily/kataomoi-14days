@@ -14,9 +14,7 @@ helpers do
 
 	def queue
 		@queue ||= q3.queues.create('LoveLetter',
-			message_retention_period: 14*24*60*60,
-			visibility_timeout: 30,
-			delay_seconds: 30
+			message_retention_period: 14*24*60*60
 		)
 	end
 end
@@ -30,11 +28,7 @@ get '/letters/write' do
 end
 
 get '/letters' do
-	message = queue.receive_message
-	if message
-		@body = message.body
-		#message.delete
-	end
+	@message = queue.receive_message
 	haml :'/letters'
 end
 
@@ -76,5 +70,8 @@ __END__
 	%button{type:'submit',class:'btn btn-default'} 書く
 @@ /letters
 %div
-	%pre= @body || '(手紙は届いていません)'
+	- if @message
+		%pre= @message.body
+	- else
+		%pre (手紙は届いていません)
 	%a{href:'/letters'} 次の手紙へ
