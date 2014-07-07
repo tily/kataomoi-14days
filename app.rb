@@ -44,6 +44,7 @@ __END__
 %html
 	%head
 		%meta{charset: 'utf-8'}/
+		%title 14 日間の片想い
 		%link{rel:'stylesheet',href:'http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'}
 	%body
 		%div.container
