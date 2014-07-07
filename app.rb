@@ -2,6 +2,8 @@ require 'haml'
 require 'aws-sdk'
 require 'sinatra'
 
+set :haml, :escape_html => true
+
 helpers do
 	def q3
 		@q3 ||= AWS::SQS.new(
