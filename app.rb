@@ -3,6 +3,8 @@ require 'haml'
 require 'aws-sdk'
 require 'sinatra'
 
+set :haml, :escape_html => true
+
 helpers do
 	def sent_at
 		@message.sent_timestamp.strftime('%Y 年 %m 月 %d 日')
@@ -24,9 +26,7 @@ helpers do
 
 	def queue
 		@queue ||= q3.queues.create('LoveLetter',
-			message_retention_period: 14*24*60*60,
-			visibility_timeout: 30,
-			delay_seconds: 30
+			message_retention_period: 14*24*60*60
 		)
 	end
 end
@@ -56,6 +56,7 @@ __END__
 %html
 	%head
 		%meta{charset: 'utf-8'}/
+		%title 14 日間の片想い
 		%link{rel:'stylesheet',href:'http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'}
 	%body
 		%div.container
@@ -67,7 +68,7 @@ __END__
 				&nbsp;|&nbsp;
 				%a{href:'/letters'} 手紙をうけとる
 				%hr
-				= yield
+				!= yield
 				%p{style:'text-align:right;width:100%'} 2014 &copy;「14 日間の片想い」製作委員会
 @@ /
 %ol
@@ -89,6 +90,6 @@ __END__
 			%li= "この手紙は #{sent_at} に送られました、#{will_disappear_at} に消えます"
 			%li= "この手紙は 30 秒後にポストへ戻ります"
 	- else
-		%pre= '(手紙は届いていません)'
+		%pre (手紙は届いていません)
 	%a{href:'/letters'} 次の手紙へ
 
