@@ -1,11 +1,21 @@
+# coding:utf-8
 require 'haml'
 require 'aws-sdk'
 require 'sinatra'
 
 helpers do
+	def sent_at
+		@message.sent_timestamp.strftime('%Y 年 %m 月 %d 日')
+	end
+
+	def will_disappear_at
+		(@message.sent_timestamp + 14*24*60*60).strftime('%Y 年 %m 月 %d 日')
+	end
+
 	def q3
 		@q3 ||= AWS::SQS.new(
 			sqs_endpoint: 'q3-global.herokuapp.com',
+			sqs_verify_checksums: false,
 			access_key_id: 'dummy',
 			secret_access_key: 'dummy',
 			use_ssl: false
@@ -30,11 +40,7 @@ get '/letters/write' do
 end
 
 get '/letters' do
-	message = queue.receive_message
-	if message
-		@body = message.body
-		#message.delete
-	end
+	@message = queue.receive_message
 	haml :'/letters'
 end
 
@@ -57,24 +63,32 @@ __END__
 				%h1 14 日間の片想い
 				%a{href:'/'} トップ
 				&nbsp;|&nbsp;
-				%a{href:'/letters/write'} 手紙を書く
+				%a{href:'/letters/write'} 手紙をおくる
 				&nbsp;|&nbsp;
-				%a{href:'/letters'} 手紙を読む
+				%a{href:'/letters'} 手紙をうけとる
 				%hr
 				= yield
 				%p{style:'text-align:right;width:100%'} 2014 &copy;「14 日間の片想い」製作委員会
 @@ /
-%ul
-	%li 手紙を書けます
-	%li 手紙を読めます
-	%li 14 日間たつと手紙は消えます
+%ol
+	%li 手紙をおくれます
+	%li 手紙をうけとれます
+	%li 14 日間たつと消えます
 @@ /letters/write
 %form.form{role:'form',method:'POST',action:'/letters'}
 	%div.form-group
 		%label{for:'body'} 前略
 		%textarea.form-control{name:'body',rows:'3'}
-	%button{type:'submit',class:'btn btn-default'} 書く
+	%button{type:'submit',class:'btn btn-default'} おくる
 @@ /letters
 %div
-	%pre= @body || '(手紙は届いていません)'
+	- if @message
+		%pre= @message.body
+		%ul
+			%li= "この手紙は #{@message.approximate_receive_count} 回うけとられました"
+			%li= "この手紙は #{sent_at} に送られました、#{will_disappear_at} に消えます"
+			%li= "この手紙は 30 秒後にポストへ戻ります"
+	- else
+		%pre= '(手紙は届いていません)'
 	%a{href:'/letters'} 次の手紙へ
+
