@@ -40,7 +40,8 @@ get '/letters/write' do
 end
 
 get '/letters' do
-	@message = queue.receive_message
+	@visibility_timeout = rand(60)+1
+	@message = queue.receive_message(:visibility_timeout => @visibility_timeout)
 	haml :'/letters'
 end
 
@@ -88,7 +89,7 @@ __END__
 		%ul
 			%li= "この手紙は #{@message.approximate_receive_count} 回うけとられました"
 			%li= "この手紙は #{sent_at} に送られました、#{will_disappear_at} に消えます"
-			%li= "この手紙は 30 秒後にポストへ戻ります"
+			%li= "この手紙は #{@visibility_timeout} 秒後にポストへ戻ります"
 	- else
 		%pre (手紙は届いていません)
 	%a{href:'/letters'} 次の手紙へ
