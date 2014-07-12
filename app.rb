@@ -6,12 +6,16 @@ require 'sinatra'
 set :haml, :escape_html => true
 
 helpers do
+	def sent_timestamp
+		Time.at(@message[:attributes]['SentTimestamp'].to_i/1000)
+	end
+
 	def sent_at
-		@message.sent_timestamp.strftime('%Y 年 %m 月 %d 日')
+		sent_timestamp.strftime('%Y 年 %m 月 %d 日')
 	end
 
 	def will_disappear_at
-		(@message.sent_timestamp + 14*24*60*60).strftime('%Y 年 %m 月 %d 日')
+		(sent_timestamp + 14*24*60*60).strftime('%Y 年 %m 月 %d 日')
 	end
 
 	def q3
@@ -41,10 +45,11 @@ end
 
 get '/letters' do
 	@visibility_timeout = rand(60)+1
-	@message = queue.receive_message(
+	@message = queue.client.receive_message(
 		:visibility_timeout => @visibility_timeout,
-		:q3_receive_type => 'sample'
-	)
+		:q3_receive_type => 'sample',
+		:queue_url => queue.url
+	)[:messages].first
 	haml :'/letters'
 end
 
@@ -88,9 +93,9 @@ __END__
 @@ /letters
 %div
 	- if @message
-		%pre= @message.body
+		%pre= @message[:body]
 		%ul
-			%li= "この手紙は #{@message.approximate_receive_count} 回うけとられました"
+			%li= "この手紙は #{@message[:attributes]['ApproximateReceiveCount']} 回うけとられました"
 			%li= "この手紙は #{sent_at} に送られました、#{will_disappear_at} に消えます"
 			%li= "この手紙は #{@visibility_timeout} 秒後にポストへ戻ります"
 	- else
