@@ -63,7 +63,6 @@ __END__
 		%div.container
 			%div.jumbotron
 				%h1 14 日間の片想い
-				%p.bg-danger 前略 適当にメンテナンスします、なるべく手紙が消えないようにいたします
 				%a{href:'/'} トップ
 				&nbsp;|&nbsp;
 				%a{href:'/letters/write'} 手紙をおくる
