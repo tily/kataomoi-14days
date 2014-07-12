@@ -83,7 +83,7 @@ __END__
 %ol
 	%li 手紙をおくれます
 	%li 手紙をうけとれます
-	%li 14 日間たつと消えます
+	%li 14 日たつと消えます
 @@ /letters/write
 %form.form{role:'form',method:'POST',action:'/letters'}
 	%div.form-group
