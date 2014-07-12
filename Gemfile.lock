@@ -1,9 +1,14 @@
+GIT
+  remote: git://github.com/tily/aws-sdk-ruby.git
+  revision: 950022d37352e32aaacad9f27753199d7b2b8747
+  specs:
+    aws-sdk (1.47.0)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
-    aws-sdk (1.46.0)
-      json (~> 1.4)
-      nokogiri (>= 1.4.4)
     haml (4.0.5)
       tilt
     json (1.8.1)
@@ -23,6 +28,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aws-sdk
+  aws-sdk!
   haml
   sinatra
