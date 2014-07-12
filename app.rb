@@ -41,7 +41,10 @@ end
 
 get '/letters' do
 	@visibility_timeout = rand(60)+1
-	@message = queue.receive_message(:visibility_timeout => @visibility_timeout)
+	@message = queue.receive_message(
+		:visibility_timeout => @visibility_timeout,
+		:q3_receive_type => 'sample'
+	)
 	haml :'/letters'
 end
 
